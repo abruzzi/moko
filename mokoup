@@ -1,0 +1,4 @@
+#!/bin/env ruby
+
+require 'mock_server'
+Moko::Server.run
