@@ -2,7 +2,9 @@ require 'net/http'
 
 namespace :moko do
     task :fetch do
-        FileUtils.mkdir_p("moco")
+        FileUtils.mkdir_p "moco" 
+        FileUtils.mkdir_p 'resources'
+        FileUtils.mkdir_p 'conf'
 
         unless File.exist? "moco/moco-runner-standalone.jar" then
             puts "Downloading moco-runner..."

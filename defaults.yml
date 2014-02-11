@@ -1,0 +1,5 @@
+defaults:
+    string: "String Value"
+    float: 1.0
+    integer: 1
+    datetime: "Wed Feb 12 01:12:33 EST 2014" 

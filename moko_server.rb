@@ -1,29 +1,24 @@
 require 'erb'
 require 'json'
+require 'yaml'
 require 'active_support/inflector'
 require 'fileutils'
 
 module Moko
     class Dual
-        def initialize name
-            @name = name
+        def initialize
             @fields = {}
+            @defaults = YAML.load_file("./defaults.yml")['defaults']
         end
 
-        def string field
-            @fields[field.to_sym] = "defaultStringValue"
-        end
+        def method_missing(method, *args, &block)
+            attr = method.to_s
 
-        def float field
-            @fields[field.to_sym] = 1.0
-        end
-
-        def integer field
-            @fields[field.to_sym] = 1
-        end
-
-        def datetime field
-            @fields[field.to_sym] = Time.now
+            if @defaults.key?(attr)
+                @fields[attr] = @defaults[attr]
+            else
+                super.method_missing(method, args, &block)
+            end
         end
 
         def render
@@ -73,8 +68,6 @@ module Moko
         def initialize
             @template = File.read("template/resource.erb")
             @items = []
-            FileUtils.mkdir_p 'resources'
-            FileUtils.mkdir_p 'conf'
         end
 
         def resources *arguments
@@ -84,7 +77,7 @@ module Moko
         end
 
         def resource res, &block
-            obj = Moko::Dual.new res
+            obj = Moko::Dual.new
             obj.instance_eval(&block) if block_given?
             resources res.to_s.pluralize.to_sym
             File.open("resources/#{res.to_s.pluralize}.json", "w") { |io| io.write(obj.render) }
