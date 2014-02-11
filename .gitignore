@@ -1,0 +1,4 @@
+resources/
+*.swp
+moco/
+conf/

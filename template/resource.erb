@@ -1,0 +1,71 @@
+{
+    "request": {
+        "method": "get",
+        "uri": "/<%= item %>"
+    },
+    "response": {
+        "status": 200,
+        "headers" : {
+          	"content-type" : "application/json"
+        },        
+        "file": "resources/<%= item %>.json"
+    }
+},
+{
+    "request": {
+        "method": "get",
+        "uri": {
+        	"match": "/<%= item %>/\\d+"
+        }
+    },
+    "response": {
+        "status": 200,
+        "headers" : {
+          	"content-type" : "application/json"
+        },        
+        "file": "resources/<%= item %>.json"
+    }
+},
+{
+    "request": {
+        "method": "post",
+        "uri": "/<%= item %>"
+    },
+    "response": {
+        "status": 201,
+        "headers" : {
+          	"content-type" : "application/json"
+        },        
+        "file": "resources/<%= item %>.json"
+    }
+},
+{
+    "request": {
+        "method": "put",
+        "uri": {
+            "match": "/<%= item %>/\\d+"
+        }
+	},
+	"response": {
+        "status": 200,
+        "headers" : {
+          	"content-type" : "application/json"
+        },        
+        "file": "resources/<%= item %>.json"
+    }	
+},
+{
+    "request": {
+        "method": "delete",
+        "uri": {
+            "match": "/<%= item %>/\\d+"
+        }
+	},
+	"response": {
+        "status": 200,
+        "headers" : {
+          	"content-type" : "application/json"
+        },
+        "file": "resources/<%= item %>.json"
+    }
+}
