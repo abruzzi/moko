@@ -2,3 +2,4 @@ resources/
 *.swp
 moco/
 conf/
+moko.rb

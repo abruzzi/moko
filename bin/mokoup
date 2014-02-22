@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require 'net/http'
+
+require 'moko'
+
+class MokoUp < Thor
+    include Thor::Actions
+
+    no_commands do
+        def download_moco_if_needed
+            moco_dir = File.join(File.dirname(File.expand_path(__FILE__)), 'moco')
+            FileUtils.mkdir_p moco_dir
+
+            moco_standalone = File.join(File.dirname(File.expand_path(__FILE__)), "moco/moco-runner-standalone.jar")
+            unless File.exist? moco_standalone then
+                puts "Downloading moco-runner..."
+                Net::HTTP.start("repo1.maven.org") do |http|
+                    resp = http.get("/maven2/com/github/dreamhead/moco-runner/0.9.1/moco-runner-0.9.1-standalone.jar")
+                    open(moco_standalone, "wb") do |file|
+                        file.write(resp.body)
+                    end
+                end
+                puts "moco-runner is up-to-date"
+            end
+        end
+
+        def prepare_env
+            FileUtils.mkdir_p 'resources'
+            FileUtils.mkdir_p 'conf'
+        end
+    end
+
+    desc "server", "startup the underlying moco server"
+    method_option :server, :aliases => '-s' 
+    def server
+        download_moco_if_needed
+        moco = File.join(File.dirname(File.expand_path(__FILE__)), "moco/moco-runner-standalone.jar")
+        run "java -jar #{moco} start -p 12306 -c conf/moko.conf.json"
+    end
+
+    desc "generate", "generate moco configuration and restful resources"
+    method_option :generate, :aliases => '-g' 
+    def generate config="moko.up"
+        prepare_env
+        cfg = File.read(config)
+        eval "Moko::Server.draw do\n" + cfg + "\nend", TOPLEVEL_BINDING, config, 0
+    end
+
+end
+
+MokoUp.start

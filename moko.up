@@ -1,0 +1,6 @@
+resources :todos
+
+resource :todo do |t|
+    t.integer :id
+    t.string :description
+end
