@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency 'activesupport', '>=4.0.2'
     s.add_runtime_dependency 'thor', '>=0.18.1'
     s.executables << "mokoup"
-    s.homepage    =
-        "http:/://github.com/abruzzi/moko"
-    s.license       = "MIT"
+    s.homepage    = "https://github.com/abruzzi/moko"
+    s.license     = "MIT"
 end
