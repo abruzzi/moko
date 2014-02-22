@@ -23,7 +23,7 @@ Commands:
 There are 2 commands available currently, `generate` and `server`. `generate` command looks for a file named `moko.up` in your current directory, and use it to generate configuration for underlying `moco` server. And `server` command used to launch the `moco` server.
 
 ```sh
-$ moco server
+$ mokoup server
 ```
 
 will first try to download the latest moco first, and then launch it at port `12306`.
