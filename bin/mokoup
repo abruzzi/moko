@@ -33,11 +33,16 @@ class MokoUp < Thor
     end
 
     desc "server", "startup the underlying moco server"
-    method_option :server, :aliases => '-s' 
+    method_option :daemon, :aliases => '-d'
     def server
         download_moco_if_needed
         moco = File.join(File.dirname(File.expand_path(__FILE__)), "moco/moco-runner-standalone.jar")
-        run "java -jar #{moco} start -p 12306 -c conf/moko.conf.json"
+
+        if options[:daemon]
+            run "nohup java -jar #{moco} start -p 12306 -c conf/moko.conf.json < /dev/null > moco.std.log 2>&1 &"
+        else
+            run "java -jar #{moco} start -p 12306 -c conf/moko.conf.json"
+        end
     end
 
     desc "generate", "generate moco configuration and restful resources"

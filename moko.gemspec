@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
     s.name        = "moko"
-    s.version     = "0.1.0"
-    s.date        = "2014-02-22"
+    s.version     = "0.2.0"
+    s.date        = "2014-08-08"
     s.summary     = "moko is a helper for build restful API in secs"
     s.description = "moko is used for build restful API in secs, for testing puropse"
     s.authors     = ["Juntao Qiu"]
