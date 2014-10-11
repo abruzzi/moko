@@ -24,8 +24,12 @@ module Moko
         end
 
         def render
-            JSON.pretty_generate(@fields)
+            JSON.pretty_generate([@fields])
         end
+
+        def render_single
+            JSON.pretty_generate(@fields)
+        end        
     end
 
     class Item
@@ -48,9 +52,11 @@ module Moko
         end
         
 
-        def touch_resources 
+        def touch_resources
+
             @items.each do |item|
                 FileUtils.touch "resources/#{item}.json"
+                FileUtils.touch "resources/#{item}-single.json"
             end
         end
 
@@ -61,6 +67,8 @@ module Moko
             result = @items.reduce([]) do |result, item|
                 result << ERB.new(@template).result(Item.new(item).get_binding)
             end
+            result << ERB.new(File.read(File.join(File.dirname(File.expand_path(__FILE__)), 'template/mount.erb'))).result
+            
             resources = "[#{result.join(',')}]"
 
             File.open("conf/moko.conf.json", "w") { |f| f.write(resources) }
@@ -84,6 +92,7 @@ module Moko
             obj.instance_eval(&block) if block_given?
             resources res.to_s.pluralize.to_sym
             File.open("resources/#{res.to_s.pluralize}.json", "w") { |io| io.write(obj.render) }
+            File.open("resources/#{res.to_s.pluralize}-single.json", "w") { |io| io.write(obj.render_single) }
         end
     end
 end
