@@ -2,7 +2,6 @@ resources/
 *.swp
 moco/
 conf/
-moko.rb
 *.gem
 *.log
 server.sh
